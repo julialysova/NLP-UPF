@@ -182,6 +182,8 @@ for song, text in lyrics_dictionary2.items():
   if text not in oxxxy_songs: # Deleting duplicates
     oxxxy_songs.append(text) # Adding the lyrics to the list
 
+print(oxxxy_songs[80])
+
 print("Number of Oxxxymiron's songs: ", len(oxxxy_songs))
 
 # Creating an NLP object for Russian text processing
