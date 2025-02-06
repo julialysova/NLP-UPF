@@ -1,10 +1,8 @@
 #python -m spacy download en_core_web_md
 #python -m spacy download ru_core_news_md
-import os
 import re
 from collections import Counter
 
-import numpy as np
 from math import log
 import pandas as pd
 
@@ -66,7 +64,7 @@ for song, text in lyrics_dictionary.items():
 
 print(kendrick_songs[80])
 # Print all song names
-print("Number of songs:", len(kendrick_songs))
+print("Number of Kendrick's songs:", len(kendrick_songs))
 
 # Joining all the song in a text
 kendrick_songs_joined = " ".join(kendrick_songs)
@@ -74,7 +72,7 @@ kendrick_songs_joined = " ".join(kendrick_songs)
 doc = nlp(kendrick_songs_joined)
 
 # Putting all the lemmas from the list to one list for further counting
-lemmas = [token.lemma_.lower() for token in doc if re.search(r'[a-zA-Z]', token.text) and not "/" in token.text] 
+lemmas = [token.lemma_.lower() for token in doc if re.search(r'[a-zA-Z]', token.text) and not "/" in token.text  and not ")" in token.text] 
 # lemma should not be a punctuation, space, or contain special symbol as "+"
 
 # Using Counter for getting a number of occurence of each lemma
@@ -184,7 +182,7 @@ for song, text in lyrics_dictionary2.items():
   if text not in oxxxy_songs: # Deleting duplicates
     oxxxy_songs.append(text) # Adding the lyrics to the list
 
-print("Number of Oxxxymiron songs: ", len(oxxxy_songs))
+print("Number of Oxxxymiron's songs: ", len(oxxxy_songs))
 
 # Creating an NLP object for Russian text processing
 nlp_ru = spacy.load("ru_core_news_md")
@@ -214,8 +212,6 @@ for item in counted2.most_common(): # Iterating over items in previous dict
   log_val = log(item[1]+1)
   new_dict2[item[0]] = [length, item[1], log_val, i] # adding the length to the values list
   i += 1
-
-print(new_dict2)
 
 
 ## VISUALIZATION
