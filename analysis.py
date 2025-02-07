@@ -143,6 +143,7 @@ plt.show()
 df = pd.DataFrame.from_dict(new_dict, orient='index', columns=["length", "frequency", "logfreq", "rank"])
 df = df.reset_index().rename(columns={"index": "word"})  # Add 'word' as a column
 
+print("Mean length of lemmas in Kendrick Lamar's lyrics:", df["length"].mean())
 
 sns.relplot(x="rank", y="logfreq", data=df, 
     color="firebrick",         # Darker red shade
@@ -262,6 +263,8 @@ plt.show()
 # Make dataframe out of the dictionary for plotting
 df2 = pd.DataFrame.from_dict(new_dict2, orient='index', columns=["length", "frequency", "logfreq", "rank"])
 df2 = df2.reset_index().rename(columns={"index": "word"})  # Add 'word' as a column
+
+print("Mean length of lemmas in Oxxxymiron's lyrics:", df2["length"].mean())
 
 
 sns.relplot(x="rank", y="logfreq", data=df2,
