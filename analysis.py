@@ -73,6 +73,8 @@ doc = nlp(kendrick_songs_joined)
 
 # Putting all the lemmas from the list to one list for further counting
 lemmas = [token.lemma_.lower() for token in doc if re.search(r'[a-zA-Z]', token.text) and not "/" in token.text  and not ")" in token.text] 
+print("Number of tokens in Kendrick Lamar's lyrics:", len(lemmas))
+
 # lemma should not be a punctuation, space, or contain special symbol as "+"
 
 # Using Counter for getting a number of occurence of each lemma
@@ -167,6 +169,8 @@ doc2 = nlp_ru(oxxxy_songs_joined)
 
 # Putting all the lemmas from the list to one list for further counting
 lemmas2 = [token.lemma_.lower() for token in doc2 if re.search(r'[а-яА-ЯёЁ]', token.text)]
+print("Number of tokens in Oxxxymiron's lyrics:", len(lemmas2))
+
 # lemma should contain Russian alphabet letters
 
 # Using Counter for getting a number of occurence of each lemma
