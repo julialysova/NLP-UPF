@@ -96,75 +96,45 @@ for item in counted.most_common(): # Iterating over items in previous dict
 
 
 # VISUALIZATION OF LEMMAS DISTRIBUTION PER LENGTH
-
 # Group words by length and keep only the most frequent per length
 word_groups = {}
-for word, (length, freq, _, _) in new_dict.items():
+for word, (length, freq, logfreq, _) in new_dict.items():
     if length not in word_groups or freq > word_groups[length][1]:
-        word_groups[length] = (word, freq)  # Keep the highest frequency word
+        word_groups[length] = (word, freq, logfreq)  # Store word, frequency, and logfreq
 
-# Extract values for plotting
-x_values = [value[0] for value in new_dict.values()]
-y_values = [value[1] for value in new_dict.values()]
-labels = list(new_dict.keys())
-
-# Create scatter plot
-plt.figure(figsize=(12, 6))
-plt.scatter(x_values, y_values, color='blue', alpha=0.6)
-
-# Add labels only for the most frequent word per length
-for length, (word, freq) in word_groups.items():
-    plt.annotate(
-        word,
-        (length, freq),  # Position of the dot
-        xytext=(5, 5),  # Offset text slightly
-        textcoords="offset points",
-        fontsize=8,
-        ha='right',
-        rotation=15
-    )
-# Customize ticks and grid
-plt.xticks(fontsize=10)
-plt.yticks(fontsize=10)
-
-# Labels & Grid
-plt.xlabel("Length of Word", fontsize=12)
-plt.ylabel("Frequency of Word", fontsize=12)
-plt.title("Word length in Kendrick Lamar's lyrics", fontsize=14)
-plt.grid(True)
-
-# Adjust limits dynamically
-plt.xlim(0, max(x_values) + 1)
-plt.ylim(0, max(y_values) + 1000)
-
-plt.show()
-
-# Make dataframe out of the dictionary for plotting
+# Convert dictionary to DataFrame
 df = pd.DataFrame.from_dict(new_dict, orient='index', columns=["length", "frequency", "logfreq", "rank"])
 df = df.reset_index().rename(columns={"index": "word"})  # Add 'word' as a column
 
-print("Mean length of lemmas in Kendrick Lamar's lyrics:", df["length"].mean())
+# Filter df2 to include only the most frequent word per length
+df_labels = pd.DataFrame(word_groups.values(), columns=["word", "frequency", "logfreq"])
+df_labels["length"] = list(word_groups.keys())  # Add back the lengths
 
-sns.relplot(x="rank", y="logfreq", data=df, 
-    color="firebrick",         # Darker red shade
-    marker="o",                # Circle markers for visibility
-    linewidth=0.4,               # Thicker lines
-    alpha=0.9,                 # Reduce transparency for darker effect
-    height=6, 
-    aspect=1.5);
+# Plot using scatterplot
+plt.figure(figsize=(12, 6))
+sns.scatterplot(x="length", y="logfreq", data=df, color="firebrick", marker="o", alpha=0.9)
 
-plt.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7)  # Custom grid settings
+# Add labels only for the most frequent word per length
+for _, row in df_labels.iterrows():
+    plt.annotate(
+        row["word"], 
+        (row["length"], row["logfreq"]),
+        xytext=(5, 5),
+        textcoords="offset points",
+        fontsize=7,
+        ha='right',
+        rotation=17
+    )
 
 # Customize ticks and grid
-plt.xticks(fontsize=10)
+plt.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7)
+plt.xticks(fontsize=10, ticks=range(0,26))
 plt.yticks(fontsize=10)
-
-plt.xlabel("Rank", fontsize=12)
+plt.xlabel("Word Length", fontsize=12)
 plt.ylabel("Frequency (log scale)", fontsize=12)
 plt.title("Zipf's Law for Lemmas in Kendrick Lamar's lyrics", fontsize=14)
 plt.show()
-plt.close()
-
+print("Mean length of lemmas in Kendrick Lamar's lyrics:", df["length"].mean())
 
 
 ## OXXXYMIRON ANALYSIS
@@ -220,68 +190,41 @@ for item in counted2.most_common(): # Iterating over items in previous dict
 ## VISUALIZATION
 # Group words by length and keep only the most frequent per length
 word_groups2 = {}
-for word, (length, freq, _, _) in new_dict2.items():
+for word, (length, freq, logfreq, _) in new_dict2.items():
     if length not in word_groups2 or freq > word_groups2[length][1]:
-        word_groups2[length] = (word, freq)  # Keep the highest frequency word
+        word_groups2[length] = (word, freq, logfreq)  # Store word, frequency, and logfreq
 
-# Extract values for plotting
-x_values = [value[0] for value in new_dict2.values()]
-y_values = [value[1] for value in new_dict2.values()]
-labels = list(new_dict2.keys())
-
-# Create scatter plot
-plt.figure(figsize=(12, 6))
-plt.scatter(x_values, y_values, color='blue', alpha=0.6)
-
-# Add labels only for the most frequent word per length
-for length, (word, freq) in word_groups2.items():
-    plt.annotate(
-        word,
-        (length, freq),  # Position of the dot
-        xytext=(5, 5),  # Offset text slightly
-        textcoords="offset points",
-        fontsize=8,
-        ha='right',
-        rotation=17
-    )
-# Customize ticks and grid
-plt.xticks(fontsize=10)
-plt.yticks(fontsize=10)
-# Labels & Grid
-plt.xlabel("Length of Word", fontsize=12)
-plt.ylabel("Frequency of Word", fontsize=12)
-plt.title("Word length in Oxxxymiron's lyrics", fontsize=14)
-plt.grid(True)
-
-# Adjust limits dynamically
-plt.xlim(0, max(x_values) + 1)
-plt.ylim(0, max(y_values) + 1000)
-
-plt.show()
-
-
-# Make dataframe out of the dictionary for plotting
+# Convert dictionary to DataFrame
 df2 = pd.DataFrame.from_dict(new_dict2, orient='index', columns=["length", "frequency", "logfreq", "rank"])
 df2 = df2.reset_index().rename(columns={"index": "word"})  # Add 'word' as a column
 
-print("Mean length of lemmas in Oxxxymiron's lyrics:", df2["length"].mean())
+# Filter df2 to include only the most frequent word per length
+df_labels = pd.DataFrame(word_groups2.values(), columns=["word", "frequency", "logfreq"])
+df_labels["length"] = list(word_groups2.keys())  # Add back the lengths
 
+# Plot using scatterplot
+plt.figure(figsize=(12, 6))
+sns.scatterplot(x="length", y="logfreq", data=df2, color="firebrick", marker="o", alpha=0.9)
 
-sns.relplot(x="rank", y="logfreq", data=df2,
-    color="firebrick",         # Darker red shade
-    marker="o",                # Circle markers for visibility
-    linewidth=0.4,               # Thicker lines
-    alpha=0.9,                 # Reduce transparency for darker effect
-    height=6,
-    aspect=1.5);
+# Add labels only for the most frequent word per length
+for _, row in df_labels.iterrows():
+    plt.annotate(
+        row["word"], 
+        (row["length"], row["logfreq"]),
+        xytext=(5, 5),
+        textcoords="offset points",
+        fontsize=7,
+        ha='right',
+        rotation=17
+    )
 
-plt.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7)  # Custom grid settings
 # Customize ticks and grid
-plt.xticks(fontsize=10)
+plt.grid(True, which='both', linestyle='--', linewidth=0.5, alpha=0.7)
+plt.xticks(fontsize=10, ticks=range(0,26))
 plt.yticks(fontsize=10)
-
-plt.xlabel("Rank", fontsize=12)
+plt.xlabel("Word Length", fontsize=12)
 plt.ylabel("Frequency (log scale)", fontsize=12)
 plt.title("Zipf's Law for Lemmas in Oxxxymiron's lyrics", fontsize=14)
 plt.show()
-plt.close()
+
+print("Mean length of lemmas in Oxxxymiron's lyrics:", df2["length"].mean())
